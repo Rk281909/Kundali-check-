@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile containing birth details and preferences.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "name": { "type": "string" },
+        "dob": { "type": "string" },
+        "timeOfBirth": { "type": "string" },
+        "placeOfBirth": { "type": "string" },
+        "zodiacSign": { "type": "string" },
+        "subscriptionPlan": { "type": "string", "enum": ["free", "premium"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    },
+    "ChatSession": {
+      "title": "ChatSession",
+      "description": "A chat session with the AI Astrologer.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "createdAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "A message within a chat session.",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "model"] },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["sessionId", "role", "text", "createdAt"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Generated readings like Kundli, Tarot, Palm.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["kundli", "tarot", "palm", "compatibility", "numerology"] },
+        "content": { "type": "string" },
+        "additionalData": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "type", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles."
+    },
+    "/chatSessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/ChatSession" },
+      "description": "Chat sessions owned by users."
+    },
+    "/chatSessions/{sessionId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Messages inside a chat session."
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/Report" },
+      "description": "Generated reports for users."
+    }
+  }
+}
